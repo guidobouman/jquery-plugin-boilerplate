@@ -46,8 +46,11 @@ if ( typeof Object.create !== 'function' )
   var storageName = 'plugin_' + pluginName;
 
   var pluginObject = {
-    init: function(options, element)
-    {
+
+    exampleVariable: 0,
+
+    init: function(options, element) {
+
       var self = this;
 
       self.$window = $(window);
@@ -61,28 +64,31 @@ if ( typeof Object.create !== 'function' )
       self.bind();
 
       return self;
+
     },
 
-    bind: function()
-    {
+    bind: function() {
+
       var self = this;
 
       // Do binds
-      // self.bindProxied(self.$element, 'click', self.exampleMethod);
+      self.bindProxied(self.$element, 'click', self.exampleMethod);
+
     },
 
-    bindProxied: function($element, event, method)
-    {
+    bindProxied: function($element, event, method) {
+
       var self = this;
 
       $element.on(event + self.options.namespace, $.proxy(function(e)
       {
         return method.call(self, e);
       }, self));
+
     },
 
-    destroy: function()
-    {
+    destroy: function() {
+
       var self = this;
 
       // Remove all binds from element
@@ -90,59 +96,53 @@ if ( typeof Object.create !== 'function' )
 
       // Remove plugin instance from object
       self.$element.removeData(storageName);
+
     },
 
-    captureMenuClick: function(e)
-    {
+    exampleMethod: function(e) {
+
       var self = this;
 
-      var $target = $(self.options.panelSelector + '.' + $(e.currentTarget).data('panel'), self.$container);
+      self.exampleVariable++;
+      alert('Clicked ' + self.exampleVariable + ' times!');
 
-      self.snapToPanel($target);
-
-      return false;
     }
+
   };
 
-  $.fn[pluginName] = function(options)
-  {
-    return this.each(function()
-    {
+  $.fn[pluginName] = function(options) {
+
+    var args = Array.prototype.slice.call(arguments);
+
+    return this.each(function() {
+
       var pluginInstance = $.data(this, storageName);
-      if(typeof options === 'object' || options === 'init' || ! options)
-      {
-        if(!pluginInstance)
-        {
-          if(options === 'init')
-          {
-            options = Array.prototype.slice.call(arguments, 1);
+      if(typeof options === 'object' || options === 'init' || ! options) {
+        if(!pluginInstance) {
+          if(options === 'init') {
+            options = args[1] || {};
           }
 
-          pluginInstance = $.data(this, storageName, Object.create(pluginObject).init(options, this));
-        }
-        else
-        {
+          pluginInstance = Object.create(pluginObject).init(options, this);
+          $.data(this, storageName, pluginInstance);
+        } else {
           $.error('Plugin is already initialized for this object.');
           return;
         }
-      }
-      else if(!pluginInstance)
-      {
+      } else if(!pluginInstance) {
         $.error('Plugin is not initialized for this object yet.');
         return;
-      }
-      else if(pluginInstance[options])
-      {
-        method = options;
-        options = Array.prototype.slice.call(arguments, 1);
-        pluginInstance[method](options);
-      }
-      else
-      {
-        $.error('Method ' +  options + ' does not exist on jQuery.' + pluginName + '.');
+      } else if(pluginInstance[options]) {
+        var method = options;
+        options = args.slice(1);
+        pluginInstance[method].apply(pluginInstance, options);
+      } else {
+        $.error('Method ' +  options + ' does not exist on jQuery.panelSnap.');
         return;
       }
+
     });
+
   };
 
   $.fn[pluginName].options = {
