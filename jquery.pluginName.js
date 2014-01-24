@@ -47,22 +47,24 @@ if ( typeof Object.create !== 'function' ) {
 
   var pluginObject = {
 
-    exampleVariable: 0,
-
     init: function(options, element) {
 
       var self = this;
 
-      self.$window = $(window);
-      self.$document = $(document);
+      // Initialise options
+      self.options = $.extend(true, {}, $.fn[pluginName].options, options);
 
+      // Store current element
       self.element = element;
       self.$element = $(element);
 
-      self.options = $.extend(true, {}, $.fn[pluginName].options, options);
+      // Init your plugin stuff here
+      self.exampleVariable = 0;
 
+      // Bind events after intialisation
       self.bind();
 
+      // Return plugin instance
       return self;
 
     },
@@ -71,7 +73,7 @@ if ( typeof Object.create !== 'function' ) {
 
       var self = this;
 
-      // Do binds
+      // Do your binds
       self.bindProxied(self.$element, 'click', self.exampleMethod);
 
     },
@@ -103,8 +105,9 @@ if ( typeof Object.create !== 'function' ) {
 
       var self = this;
 
+      // Do some magic!
       self.exampleVariable++;
-      alert('Clicked ' + self.exampleVariable + ' times!');
+      console.log('Clicked ' + self.exampleVariable + ' times!');
 
     }
 
