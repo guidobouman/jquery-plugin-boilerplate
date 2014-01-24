@@ -137,7 +137,7 @@ if ( typeof Object.create !== 'function' ) {
         options = args.slice(1);
         pluginInstance[method].apply(pluginInstance, options);
       } else {
-        $.error('Method ' +  options + ' does not exist on jQuery.panelSnap.');
+        $.error('Method ' +  options + ' does not exist on jQuery.' + pluginName + '.');
         return;
       }
 
