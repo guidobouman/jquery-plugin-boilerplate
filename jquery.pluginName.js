@@ -54,6 +54,9 @@ if ( typeof Object.create !== 'function' ) {
       // Initialise options
       self.options = $.extend(true, {}, $.fn[pluginName].options, options);
 
+      // Set plugin event namespace
+      self.namespace = '.' + pluginName + '.' + new Date().getTime();
+
       // Store current element
       self.element = element;
       self.$element = $(element);
@@ -82,7 +85,7 @@ if ( typeof Object.create !== 'function' ) {
 
       var self = this;
 
-      $element.on(event + self.options.namespace, $.proxy(function(e)
+      $element.on(event + self.namespace, $.proxy(function(e)
       {
         return method.call(self, e);
       }, self));
@@ -94,7 +97,7 @@ if ( typeof Object.create !== 'function' ) {
       var self = this;
 
       // Remove all binds from element
-      self.$element.off(self.options.namespace);
+      self.$element.off(self.namespace);
 
       // Remove plugin instance from object
       self.$element.removeData(storageName);
