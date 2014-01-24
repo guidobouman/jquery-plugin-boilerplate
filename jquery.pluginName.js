@@ -42,7 +42,7 @@ if ( typeof Object.create !== 'function' ) {
  */
 (function($, window, document, undefined)
 {
-  var pluginName = 'highlightSnap';
+  var pluginName = 'pluginBoilerplate';
   var storageName = 'plugin_' + pluginName;
 
   var pluginObject = {
