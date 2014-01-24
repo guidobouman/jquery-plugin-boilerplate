@@ -14,7 +14,7 @@ if ( typeof Object.create !== 'function' ) {
  * Version 0.1.0
  *
  * Requires:
- * - jQuery 1.7.1 or higher (Works with the API changes from 1.9.1 too)
+ * - jQuery 1.7 or higher (no jQuery.migrate needed)
  *
  * https://github.com/guidobouman/jquery-plugin-boilerplate
  *
